@@ -2,15 +2,13 @@ package com.lucasit.withdraw.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
@@ -23,18 +21,24 @@ public class Transactions {
     @Column(name = "transaction_id")
     private Long id;
 
+    @Column(name = "transaction_external_id")
+    private Long transactionId;
+
     @Column(name = "amount")
     private BigDecimal amount;
 
     @Column(name = "event_date")
     private LocalDateTime eventDate;
 
-    @OneToOne(optional = false)
+    @OneToOne
     @JoinColumn(name = "operation_type_id")
     private OperationType operationType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @Enumerated(EnumType.ORDINAL)
+    private TrasactionStatus transactionStatus;
 
 }

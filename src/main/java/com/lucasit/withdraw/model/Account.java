@@ -1,14 +1,15 @@
 package com.lucasit.withdraw.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,13 +21,21 @@ public class Account {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(name = "account_number", unique = true)
-    private Long accountNumber;
-
     @Column(name = "national_id_Number")
     private Long nationalIdNumber;
 
-    @ManyToOne
+    @Column(name = "account_number", unique = true)
+    private Long accountNumber;
+
+    @Column(name = "bank_name")
+    private String bankName;
+
+    private BigDecimal balance;
+
+    private AccountType accountType;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

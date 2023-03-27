@@ -1,16 +1,15 @@
 package com.lucasit.withdraw.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.lucasit.withdraw.operations.OperationTypeStrategy;
+import com.lucasit.withdraw.operations.PaymentOperationTypeStrategy;
+import com.lucasit.withdraw.operations.TopUpOperationTypeStrategy;
+import com.lucasit.withdraw.operations.WithDrawOperationTypeStrategy;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -19,9 +18,25 @@ import lombok.NoArgsConstructor;
 public class OperationType {
 
     @Id
+    @GeneratedValue
     @Column(name = "operation_type_id")
     private Long id;
 
     @Column(name = "description")
     private String description;
+
+    public static OperationTypeStrategy OperationType(Long operationId) {
+
+        switch (operationId.intValue()) {
+            case 1:
+                return new TopUpOperationTypeStrategy();
+            case 2:
+                return new WithDrawOperationTypeStrategy();
+            case 3:
+                return new PaymentOperationTypeStrategy();
+
+        }
+        return null;
+    }
+
 }
