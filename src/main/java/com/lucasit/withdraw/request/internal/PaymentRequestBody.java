@@ -16,11 +16,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentRequestBody {
 
-    @NotNull(message = "The operation_type cannot be null")
+    @NotNull(message = "The wallet_account_number cannot be null")
     @JsonProperty("wallet_account_number")
     private Long walletAccountNumber;
 
-    @NotNull(message = "The operation_type cannot be null")
+    @NotNull(message = "The external_account_number cannot be null")
     @JsonProperty("external_account_number")
     private Long externalAccountNumber;
 

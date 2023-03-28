@@ -3,7 +3,7 @@ package com.lucasit.withdraw.controller;
 import com.lucasit.withdraw.request.external.ExternalTransactionBalanceResponseBody;
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.WalletRequestBody;
-import com.lucasit.withdraw.rest.service.WalletService;
+import com.lucasit.withdraw.service.WalletService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

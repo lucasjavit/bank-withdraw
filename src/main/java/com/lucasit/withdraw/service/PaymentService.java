@@ -1,4 +1,4 @@
-package com.lucasit.withdraw.rest.service;
+package com.lucasit.withdraw.service;
 
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.PaymentRequestBody;

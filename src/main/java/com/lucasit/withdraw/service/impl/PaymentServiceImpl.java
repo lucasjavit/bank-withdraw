@@ -1,4 +1,4 @@
-package com.lucasit.withdraw.rest.service.impl;
+package com.lucasit.withdraw.service.impl;
 
 import com.lucasit.withdraw.exception.BusinessException;
 import com.lucasit.withdraw.exception.ExternalException;
@@ -19,7 +19,7 @@ import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.PaymentRequestBody;
 import com.lucasit.withdraw.request.internal.StatusResponseBody;
 import com.lucasit.withdraw.rest.RestCaller;
-import com.lucasit.withdraw.rest.service.PaymentService;
+import com.lucasit.withdraw.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

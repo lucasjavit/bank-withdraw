@@ -1,4 +1,4 @@
-package com.lucasit.withdraw.rest.service.impl;
+package com.lucasit.withdraw.service.impl;
 
 import com.lucasit.withdraw.exception.BusinessException;
 import com.lucasit.withdraw.exception.ExternalException;
@@ -18,7 +18,7 @@ import com.lucasit.withdraw.request.external.ExternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.WalletRequestBody;
 import com.lucasit.withdraw.rest.RestCaller;
-import com.lucasit.withdraw.rest.service.WalletService;
+import com.lucasit.withdraw.service.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -99,7 +99,7 @@ public class WalletServiceImpl implements WalletService {
         return response != null && response.hasBody() ? response.getBody() : new ExternalTransactionBalanceResponseBody();
     }
 
-    public ExternalTransactionResponseBody callPost(ExternalTransactionRequestBody externalTransactionRequestBody) {
+    private ExternalTransactionResponseBody callPost(ExternalTransactionRequestBody externalTransactionRequestBody) {
 
         ResponseEntity<ExternalTransactionResponseBody> response = restCaller
                 .callPost(uriPayment, externalTransactionRequestBody, new ParameterizedTypeReference<>() {

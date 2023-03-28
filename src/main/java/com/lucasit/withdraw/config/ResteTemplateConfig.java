@@ -1,4 +1,4 @@
-package com.lucasit.withdraw.controller.config;
+package com.lucasit.withdraw.config;
 
 
 import org.springframework.boot.web.client.RestTemplateBuilder;

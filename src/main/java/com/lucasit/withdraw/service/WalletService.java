@@ -1,4 +1,4 @@
-package com.lucasit.withdraw.rest.service;
+package com.lucasit.withdraw.service;
 
 import com.lucasit.withdraw.request.external.ExternalTransactionBalanceResponseBody;
 import com.lucasit.withdraw.request.internal.WalletRequestBody;
