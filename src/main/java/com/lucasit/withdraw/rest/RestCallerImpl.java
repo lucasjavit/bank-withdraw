@@ -19,7 +19,7 @@ public class RestCallerImpl implements RestCaller {
 
     @Override
     public <T> ResponseEntity<T> callGet(String url, ParameterizedTypeReference<T> responseType) {
-        return restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+        return restTemplate.exchange(baseUrl + url, HttpMethod.GET, null, responseType);
     }
 
     @Override

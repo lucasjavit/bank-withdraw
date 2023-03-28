@@ -35,8 +35,11 @@ public class WalletServiceImpl implements WalletService {
 
     private final Integer TEN_PERCENT = 10;
 
-    @Value("${uri.wallet.transaction}")
-    private String uriPayment;
+    @Value("${uri.wallet}")
+    private String wallet;
+
+    @Value("${uri.wallet.transactions}")
+    private String transactions;
 
     @Value("${uri.wallet.balance}")
     private String uriBalance;
@@ -94,7 +97,7 @@ public class WalletServiceImpl implements WalletService {
     public ExternalTransactionBalanceResponseBody getBalance(Long userId) {
 
         ResponseEntity<ExternalTransactionBalanceResponseBody> response = restCaller
-                .callGet(uriBalance + userId, new ParameterizedTypeReference<>() {
+                .callGet(wallet + uriBalance + userId, new ParameterizedTypeReference<>() {
                 });
         return response != null && response.hasBody() ? response.getBody() : new ExternalTransactionBalanceResponseBody();
     }
@@ -102,7 +105,7 @@ public class WalletServiceImpl implements WalletService {
     private ExternalTransactionResponseBody callPost(ExternalTransactionRequestBody externalTransactionRequestBody) {
 
         ResponseEntity<ExternalTransactionResponseBody> response = restCaller
-                .callPost(uriPayment, externalTransactionRequestBody, new ParameterizedTypeReference<>() {
+                .callPost(wallet + transactions, externalTransactionRequestBody, new ParameterizedTypeReference<>() {
                 });
 
         return response != null && response.hasBody() ? response.getBody() : new ExternalTransactionResponseBody();

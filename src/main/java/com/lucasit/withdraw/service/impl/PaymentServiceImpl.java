@@ -23,6 +23,8 @@ import com.lucasit.withdraw.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,10 +107,14 @@ public class PaymentServiceImpl implements PaymentService {
     public StatusResponseBody getStatus(Long paymentId) {
 
         ResponseEntity<StatusResponseBody> response = restCaller
-                .callGet(paymentId + uriStatus, new ParameterizedTypeReference<>() {
+                .callGet(uriTransaction + paymentId + uriStatus, new ParameterizedTypeReference<>() {
                 });
 
         return response != null && response.hasBody() ? response.getBody() : new StatusResponseBody();
+    }
+
+    public Page<Transactions> getTransactions(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
     }
 
     private PaymentResponseBody callPost(PaymentExternalRequestBody paymentExternalRequestBody) throws RestClientException {
@@ -122,7 +128,6 @@ public class PaymentServiceImpl implements PaymentService {
             return null;
         }
     }
-
 
 
 }

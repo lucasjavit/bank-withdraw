@@ -15,9 +15,10 @@ spring:
 base.url: http://mockoon.tools.getontop.com:3000
 
 
-uri.wallet.transaction: /wallets/transactions
+uri.wallet: /wallets
+uri.wallet.transactions: /transactions
 uri.wallet.balance: /balance?user_id=
 
-uri.payment: /api/v1/payments
+uri.payment: /api/v1/payments/
 uri.payment.status: /status/
 

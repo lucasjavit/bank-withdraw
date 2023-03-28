@@ -1,6 +1,7 @@
 package com.lucasit.withdraw.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,7 @@ public class Transactions {
     @JoinColumn(name = "operation_type_id")
     private OperationType operationType;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id")
     private Account account;
