@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AccountExternalRequestBody {
 
-    private Long accountNumber;
+    private String accountNumber;
     private String currency;
-    private Long routingNumber;
+    private String routingNumber;
 
     public static AccountExternalRequestBody getBuild(Account account) {
         return AccountExternalRequestBody.builder()

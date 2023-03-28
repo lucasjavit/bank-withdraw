@@ -38,8 +38,8 @@ public class WithdrawApplication implements ApplicationRunner {
         AccountPostBody walletAccountPostBody = AccountPostBody.builder()
                 .name("Lucho")
                 .surname("Rodriguez")
-                .nationalIdNumber(28444018l)
-                .accountNumber(245253419l)
+                .nationalIdNumber("028444018")
+                .accountNumber("0245253419")
                 .bankName("City Bank")
                 .accountType(1)
                 .build();
@@ -48,8 +48,8 @@ public class WithdrawApplication implements ApplicationRunner {
         AccountPostBody externalAccountPostBody = AccountPostBody.builder()
                 .name("TONY")
                 .surname("STARK")
-                .nationalIdNumber(211927207l)
-                .accountNumber(1885226711l)
+                .nationalIdNumber("211927207")
+                .accountNumber("1885226711")
                 .bankName("City Bank")
                 .accountType(2)
                 .build();

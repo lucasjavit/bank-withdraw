@@ -1,5 +1,7 @@
 package com.lucasit.withdraw.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucasit.withdraw.exception.BusinessException;
 import com.lucasit.withdraw.exception.ExternalException;
 import com.lucasit.withdraw.mapper.TransactionMapper;
@@ -30,7 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
@@ -79,29 +80,32 @@ public class PaymentServiceImpl implements PaymentService {
         PaymentExternalRequestBody paymentExternalRequestBody = PaymentExternalRequestBody
                 .getBuild(walletAccount, externalAccount, paymentRequestBody);
 
-        PaymentResponseBody paymentResponseBody = null;
 
         try {
-            paymentResponseBody = callPost(paymentExternalRequestBody);
+            PaymentResponseBody paymentResponseBody = callPost(paymentExternalRequestBody);
+
+            /*Update account*/
+
+            accountRepository.save(walletAccount);
+
+            /*Save - Transaction*/
+
+            Transactions transactions = TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.PROGRESS, paymentResponseBody, newAmount);
+
+
+            transactionRepository.save(transactions);
+
+            return WalletMapper.PaymentResponseBody(walletAccount.getUser().getId(), newAmount,
+                    String.valueOf(walletAccount.getId()), paymentResponseBody, walletAccount.getBalance(), operationType);
+
         } catch (HttpClientErrorException ex) {
             ExternalError externalError = ex.getResponseBodyAs(ExternalError.class);
 
-            throw new ExternalException(TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.FAILED, paymentResponseBody, newAmount));
+            throw new ExternalException(TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.FAILED, new PaymentResponseBody(), newAmount));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-
-        /*Update account*/
-
-        accountRepository.save(walletAccount);
-
-        /*Save - Transaction*/
-
-        Transactions transactions = TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.PROGRESS, paymentResponseBody, newAmount);
-
-
-        transactionRepository.save(transactions);
-
-        return WalletMapper.PaymentResponseBody(walletAccount.getUser().getId(), newAmount,
-                walletAccount.getId(), paymentResponseBody, walletAccount.getBalance(), operationType);
+        return null;
     }
 
     public StatusResponseBody getStatus(Long paymentId) {
@@ -117,16 +121,16 @@ public class PaymentServiceImpl implements PaymentService {
         return transactionRepository.findAll(pageable);
     }
 
-    private PaymentResponseBody callPost(PaymentExternalRequestBody paymentExternalRequestBody) throws RestClientException {
-        try {
-            PaymentResponseBody externalTransactionResponseBody = new RestTemplate()
-                    .postForObject(baseUrl + uriTransaction,
-                            paymentExternalRequestBody, PaymentResponseBody.class);
+    private PaymentResponseBody callPost(PaymentExternalRequestBody paymentExternalRequestBody) throws RestClientException, JsonProcessingException {
 
-            return externalTransactionResponseBody;
-        } catch (RestClientException e) {
-            return null;
-        }
+
+        String json = new ObjectMapper().writeValueAsString(paymentExternalRequestBody);
+
+        ResponseEntity<PaymentResponseBody> response = restCaller
+                .callPost(uriTransaction, paymentExternalRequestBody, new ParameterizedTypeReference<>() {
+                });
+
+        return response != null && response.hasBody() ? response.getBody() : new PaymentResponseBody();
     }
 
 

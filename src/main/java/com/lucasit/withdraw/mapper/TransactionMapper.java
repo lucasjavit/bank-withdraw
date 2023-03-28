@@ -27,7 +27,7 @@ public abstract class TransactionMapper {
                 .eventDate(LocalDateTime.now())
                 .account(account)
                 .amount(newAmount)
-                .transactionId(externalTransactionResponseBody == null ? null : externalTransactionResponseBody.getWalletId())
+                .transactionId(externalTransactionResponseBody == null ? null : String.valueOf(externalTransactionResponseBody.getWalletId()))
                 .transactionStatus(trasactionStatus)
                 .build();
     }

@@ -22,10 +22,10 @@ public class Account {
     private Long id;
 
     @Column(name = "national_id_Number")
-    private Long nationalIdNumber;
+    private String nationalIdNumber;
 
     @Column(name = "account_number", unique = true)
-    private Long accountNumber;
+    private String accountNumber;
 
     @Column(name = "bank_name")
     private String bankName;

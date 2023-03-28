@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class ExternalTransactionResponseBody {
 
     @JsonProperty("wallet_transaction_id")
-    private Long walletId;
+    private String walletId;
 
     private BigDecimal amount;
 

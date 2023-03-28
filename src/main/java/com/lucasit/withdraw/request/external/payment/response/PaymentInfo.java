@@ -13,6 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentInfo {
 
-    private Long id;
+    private String id;
     private BigDecimal amount;
 }

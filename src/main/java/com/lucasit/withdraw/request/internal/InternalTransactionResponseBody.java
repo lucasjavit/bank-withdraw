@@ -17,8 +17,8 @@ public class InternalTransactionResponseBody {
     private Long user_id;
     private BigDecimal amount;
     private String operation_type;
-    private Long account_number;
-    private Long wallet_transaction_id;
+    private String account_number;
+    private String wallet_transaction_id;
     private BigDecimal balance;
 
 }

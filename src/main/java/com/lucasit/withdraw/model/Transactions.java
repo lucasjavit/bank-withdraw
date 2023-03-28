@@ -23,7 +23,7 @@ public class Transactions {
     private Long id;
 
     @Column(name = "transaction_external_id")
-    private Long transactionId;
+    private String transactionId;
 
     @Column(name = "amount")
     private BigDecimal amount;

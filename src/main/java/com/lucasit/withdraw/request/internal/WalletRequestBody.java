@@ -18,7 +18,7 @@ public class WalletRequestBody {
 
     @NotNull(message = "The wallet_account_number cannot be null")
     @JsonProperty("wallet_account_number")
-    private Long walletAccountNumber;
+    private String walletAccountNumber;
 
     @NotNull(message = "The operation_type cannot be null")
     @JsonProperty("operation_type")

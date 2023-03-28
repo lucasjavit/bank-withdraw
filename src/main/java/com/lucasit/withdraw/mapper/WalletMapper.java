@@ -14,18 +14,18 @@ public abstract class WalletMapper {
     public static final WalletMapper INSTANCE = Mappers.getMapper(WalletMapper.class);
 
     public static InternalTransactionResponseBody toTopUpResponseBody(Long userId, BigDecimal newAmount,
-                                                                      Long account_id, Long walletTransactionId, BigDecimal balance, OperationType operationType) {
+                                                                      String account_id, String walletTransactionId, BigDecimal balance, OperationType operationType) {
         return InternalTransactionResponseBody.builder()
                 .user_id(userId)
                 .amount(newAmount)
                 .operation_type(operationType.getDescription())
                 .account_number(account_id)
-                .wallet_transaction_id(walletTransactionId)
+                .wallet_transaction_id(String.valueOf(walletTransactionId))
                 .balance(balance)
                 .build();
     }
 
-    public static InternalTransactionResponseBody PaymentResponseBody(Long userId, BigDecimal newAmount, Long account_id, PaymentResponseBody paymentResponseBody, BigDecimal balance, OperationType operationType) {
+    public static InternalTransactionResponseBody PaymentResponseBody(Long userId, BigDecimal newAmount, String account_id, PaymentResponseBody paymentResponseBody, BigDecimal balance, OperationType operationType) {
 
         return InternalTransactionResponseBody.builder()
                 .user_id(userId)

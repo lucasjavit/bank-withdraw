@@ -72,26 +72,27 @@ public class WalletServiceImpl implements WalletService {
                 .userId(account.getUser().getId())
                 .build();
 
-        ExternalTransactionResponseBody externalTransactionResponseBody = new ExternalTransactionResponseBody();
-        Transactions transactions;
 
+        ExternalTransactionResponseBody externalTransactionResponseBody = null;
         try {
-            externalTransactionResponseBody = callPost(externalTransaction);
+            Transactions transactions;
+            externalTransactionResponseBody = externalTransactionResponseBody = callPost(externalTransaction);
+
+            Account accountUpdated = accountRepository.save(account);
+
+            transactions = TransactionMapper.getBuild(walletRequestBody.getAmount(), operationType, account,
+                    TrasactionStatus.COMPLETED, externalTransactionResponseBody, newAmount);
+
+            transactionRepository.save(transactions);
+
+            return WalletMapper.toTopUpResponseBody(account.getUser().getId(), walletRequestBody.getAmount(), account.getAccountNumber(),
+                    externalTransactionResponseBody == null ? null : externalTransactionResponseBody.getWalletId(), accountUpdated.getBalance(), operationType);
+
         } catch (HttpClientErrorException ex) {
             throw new ExternalException(TransactionMapper.getBuild(walletRequestBody.getAmount(), operationType, account,
                     TrasactionStatus.FAILED,
                     externalTransactionResponseBody, newAmount));
         }
-
-        Account accountUpdated = accountRepository.save(account);
-
-        transactions = TransactionMapper.getBuild(walletRequestBody.getAmount(), operationType, account,
-                TrasactionStatus.COMPLETED, externalTransactionResponseBody, newAmount);
-
-        transactionRepository.save(transactions);
-
-        return WalletMapper.toTopUpResponseBody(account.getUser().getId(), walletRequestBody.getAmount(), account.getAccountNumber(),
-                externalTransactionResponseBody == null ? null : externalTransactionResponseBody.getWalletId(), accountUpdated.getBalance(), operationType);
     }
 
     public ExternalTransactionBalanceResponseBody getBalance(Long userId) {

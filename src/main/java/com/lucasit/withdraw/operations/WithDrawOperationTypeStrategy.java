@@ -18,8 +18,8 @@ public class WithDrawOperationTypeStrategy implements OperationTypeStrategy {
 
     @Override
     public BigDecimal calculateAmount(BigDecimal balance, BigDecimal amount) {
-        if (balance.compareTo(amount) < 0) {
-            throw new BusinessException("Amount is greater than balance.");
+        if (balance.compareTo(amount) <= 0) {
+            throw new BusinessException("Amount is less than balance.");
         }
         return balance.subtract(amount);
     }

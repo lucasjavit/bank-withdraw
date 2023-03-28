@@ -25,11 +25,11 @@ public class AccountPostBody {
 
     @NotNull(message = "The national_identification cannot be empty")
     @JsonProperty("national_identification")
-    private Long nationalIdNumber;
+    private String nationalIdNumber;
 
     @NotNull(message = "The account_numer cannot be empty")
     @JsonProperty("account_number")
-    private Long accountNumber;
+    private String accountNumber;
 
     @NotEmpty(message = "The bank_name cannot be empty")
     @NotNull(message = "The bank_name cannot be null")
