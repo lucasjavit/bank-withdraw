@@ -72,11 +72,9 @@ public class WalletServiceImpl implements WalletService {
                 .userId(account.getUser().getId())
                 .build();
 
-
-        ExternalTransactionResponseBody externalTransactionResponseBody = null;
         try {
             Transactions transactions;
-            externalTransactionResponseBody = externalTransactionResponseBody = callPost(externalTransaction);
+            ExternalTransactionResponseBody externalTransactionResponseBody = callPost(externalTransaction);
 
             Account accountUpdated = accountRepository.save(account);
 
@@ -86,12 +84,12 @@ public class WalletServiceImpl implements WalletService {
             transactionRepository.save(transactions);
 
             return WalletMapper.toTopUpResponseBody(account.getUser().getId(), walletRequestBody.getAmount(), account.getAccountNumber(),
-                    externalTransactionResponseBody == null ? null : externalTransactionResponseBody.getWalletId(), accountUpdated.getBalance(), operationType);
+                    externalTransactionResponseBody, accountUpdated.getBalance(), operationType);
 
         } catch (HttpClientErrorException ex) {
             throw new ExternalException(TransactionMapper.getBuild(walletRequestBody.getAmount(), operationType, account,
                     TrasactionStatus.FAILED,
-                    externalTransactionResponseBody, newAmount));
+                    new ExternalTransactionResponseBody(), newAmount));
         }
     }
 

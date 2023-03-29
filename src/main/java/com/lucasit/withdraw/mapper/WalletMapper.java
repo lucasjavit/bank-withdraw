@@ -1,6 +1,7 @@
 package com.lucasit.withdraw.mapper;
 
 import com.lucasit.withdraw.model.OperationType;
+import com.lucasit.withdraw.request.external.ExternalTransactionResponseBody;
 import com.lucasit.withdraw.request.external.payment.response.PaymentResponseBody;
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import org.mapstruct.Mapper;
@@ -14,13 +15,13 @@ public abstract class WalletMapper {
     public static final WalletMapper INSTANCE = Mappers.getMapper(WalletMapper.class);
 
     public static InternalTransactionResponseBody toTopUpResponseBody(Long userId, BigDecimal newAmount,
-                                                                      String account_id, String walletTransactionId, BigDecimal balance, OperationType operationType) {
+                                                                      String account_id, ExternalTransactionResponseBody externalTransactionResponseBody, BigDecimal balance, OperationType operationType) {
         return InternalTransactionResponseBody.builder()
                 .user_id(userId)
                 .amount(newAmount)
                 .operation_type(operationType.getDescription())
                 .account_number(account_id)
-                .wallet_transaction_id(String.valueOf(walletTransactionId))
+                .wallet_transaction_id(String.valueOf(externalTransactionResponseBody == null ? null : externalTransactionResponseBody.getWalletId()))
                 .balance(balance)
                 .build();
     }

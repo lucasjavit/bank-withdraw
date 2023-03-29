@@ -1,7 +1,5 @@
 package com.lucasit.withdraw.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucasit.withdraw.exception.BusinessException;
 import com.lucasit.withdraw.exception.ExternalException;
 import com.lucasit.withdraw.mapper.TransactionMapper;
@@ -46,9 +44,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Value("${uri.payment.status}")
     private String uriStatus;
-
-    @Value("${base.url}")
-    private String baseUrl;
 
 
     private final TransactionRepository transactionRepository;
@@ -102,10 +97,7 @@ public class PaymentServiceImpl implements PaymentService {
             ExternalError externalError = ex.getResponseBodyAs(ExternalError.class);
 
             throw new ExternalException(TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.FAILED, new PaymentResponseBody(), newAmount));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
     public StatusResponseBody getStatus(Long paymentId) {
@@ -121,10 +113,7 @@ public class PaymentServiceImpl implements PaymentService {
         return transactionRepository.findAll(pageable);
     }
 
-    private PaymentResponseBody callPost(PaymentExternalRequestBody paymentExternalRequestBody) throws RestClientException, JsonProcessingException {
-
-
-        String json = new ObjectMapper().writeValueAsString(paymentExternalRequestBody);
+    private PaymentResponseBody callPost(PaymentExternalRequestBody paymentExternalRequestBody) throws RestClientException {
 
         ResponseEntity<PaymentResponseBody> response = restCaller
                 .callPost(uriTransaction, paymentExternalRequestBody, new ParameterizedTypeReference<>() {
