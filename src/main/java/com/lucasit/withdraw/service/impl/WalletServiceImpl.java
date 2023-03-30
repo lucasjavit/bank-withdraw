@@ -15,6 +15,7 @@ import com.lucasit.withdraw.repository.TransactionRepository;
 import com.lucasit.withdraw.request.external.ExternalTransactionBalanceResponseBody;
 import com.lucasit.withdraw.request.external.ExternalTransactionRequestBody;
 import com.lucasit.withdraw.request.external.ExternalTransactionResponseBody;
+import com.lucasit.withdraw.request.external.payment.response.PaymentResponseBody;
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
 import com.lucasit.withdraw.request.internal.WalletRequestBody;
 import com.lucasit.withdraw.rest.RestCaller;
@@ -87,9 +88,9 @@ public class WalletServiceImpl implements WalletService {
                     externalTransactionResponseBody, accountUpdated.getBalance(), operationType);
 
         } catch (HttpClientErrorException ex) {
-            throw new ExternalException(TransactionMapper.getBuild(walletRequestBody.getAmount(), operationType, account,
-                    TrasactionStatus.FAILED,
-                    new ExternalTransactionResponseBody(), newAmount));
+            throw new ExternalException(ex.getResponseBodyAs(String.class),
+                    TransactionMapper.getBuild(newAmount, operationType,
+                            account, TrasactionStatus.FAILED, new PaymentResponseBody(), newAmount));
         }
     }
 

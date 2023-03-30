@@ -1,10 +1,13 @@
 package com.lucasit.withdraw.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucasit.withdraw.exception.BusinessException;
 import com.lucasit.withdraw.exception.DataBaseException;
 import com.lucasit.withdraw.exception.ExternalException;
 import com.lucasit.withdraw.model.Transactions;
 import com.lucasit.withdraw.repository.TransactionRepository;
+import com.lucasit.withdraw.request.external.ExternalError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,14 +54,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {ExternalException.class})
-    public ResponseEntity<ErrorMessage> handlerExternalException(ExternalException e) {
+    public ResponseEntity<ErrorMessage> handlerExternalException(ExternalException e) throws JsonProcessingException {
+        ExternalError externalError = new ObjectMapper().readValue(e.getMessage(), ExternalError.class);
         Transactions transactions = e.getTransactions();
         transactionRepository.save(transactions);
         return new ResponseEntity<>(ErrorMessage.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .title("External Http Request Error.")
-                .message(e.getMessage())
+                .message(externalError.getMessage())
                 .build(), HttpStatus.BAD_REQUEST);
     }
 

@@ -12,7 +12,6 @@ import com.lucasit.withdraw.operations.OperationTypeStrategy;
 import com.lucasit.withdraw.repository.AccountRepository;
 import com.lucasit.withdraw.repository.OperationTypeRepository;
 import com.lucasit.withdraw.repository.TransactionRepository;
-import com.lucasit.withdraw.request.external.ExternalError;
 import com.lucasit.withdraw.request.external.payment.PaymentExternalRequestBody;
 import com.lucasit.withdraw.request.external.payment.response.PaymentResponseBody;
 import com.lucasit.withdraw.request.internal.InternalTransactionResponseBody;
@@ -94,9 +93,9 @@ public class PaymentServiceImpl implements PaymentService {
                     String.valueOf(walletAccount.getId()), paymentResponseBody, walletAccount.getBalance(), operationType);
 
         } catch (HttpClientErrorException ex) {
-            ExternalError externalError = ex.getResponseBodyAs(ExternalError.class);
-
-            throw new ExternalException(TransactionMapper.getBuild(newAmount, operationType, walletAccount, TrasactionStatus.FAILED, new PaymentResponseBody(), newAmount));
+            throw new ExternalException(ex.getResponseBodyAs(String.class),
+                    TransactionMapper.getBuild(newAmount, operationType,
+                            walletAccount, TrasactionStatus.FAILED, new PaymentResponseBody(), newAmount));
         }
     }
 

@@ -27,7 +27,7 @@ public abstract class TransactionMapper {
                 .eventDate(LocalDateTime.now())
                 .account(account)
                 .amount(newAmount)
-                .transactionId(externalTransactionResponseBody == null ? null : String.valueOf(externalTransactionResponseBody.getWalletId()))
+                .transactionId(externalTransactionResponseBody == null ? "" : String.valueOf(externalTransactionResponseBody.getWalletId()))
                 .transactionStatus(trasactionStatus)
                 .build();
     }
@@ -44,7 +44,7 @@ public abstract class TransactionMapper {
                 .eventDate(LocalDateTime.now())
                 .account(account)
                 .amount(newAmount)
-                .transactionId(paymentResponseBody == null ? null : paymentResponseBody.getPaymentInfo().getId())
+                .transactionId(paymentResponseBody == null || paymentResponseBody.getPaymentInfo() == null ? "" : paymentResponseBody.getPaymentInfo().getId())
                 .transactionStatus(trasactionStatus)
                 .build();
     }
